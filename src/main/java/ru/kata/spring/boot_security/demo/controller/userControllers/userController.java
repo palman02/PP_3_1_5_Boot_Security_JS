@@ -7,8 +7,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.service.ServiceUser;
-import ru.kata.spring.boot_security.demo.util.UserValidator;
-
 import javax.validation.Valid;
 
 
@@ -18,13 +16,10 @@ public class userController {
 
     private final ServiceUser serviceUser;
 
-    private final UserValidator userValidator;
-
 
     @Autowired
-    public userController(ServiceUser serviceUser, UserValidator userValidator) {
+    public userController(ServiceUser serviceUser) {
         this.serviceUser = serviceUser;
-        this.userValidator = userValidator;
     }
 
     @GetMapping("/{id}")

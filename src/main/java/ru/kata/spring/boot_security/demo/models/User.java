@@ -34,7 +34,6 @@ public class User implements UserDetails {
     private int age;
 
     @Column(nullable = false)
-    @Size(min = 5, message = "Пароль должен быть не менее 5 символов")
     private String password;
 
 

@@ -12,6 +12,7 @@ import ru.kata.spring.boot_security.demo.service.ServiceUserImp;
 
 import java.util.Collections;
 
+//Не использую этот класс, делал проверку кастомной проверки пароля
 @Component
 public class AuthProvider implements AuthenticationProvider {
 

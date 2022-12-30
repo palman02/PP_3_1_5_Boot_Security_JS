@@ -1,6 +1,5 @@
 package ru.kata.spring.boot_security.demo.service;
 
-import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -13,7 +12,6 @@ import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.repositories.RoleRepositories;
 import ru.kata.spring.boot_security.demo.repositories.UserRepositories;
 import javax.annotation.PostConstruct;
-import javax.persistence.EntityManager;
 import java.util.*;
 
 
@@ -21,7 +19,6 @@ import java.util.*;
 @Transactional(readOnly = true)
 public class ServiceUserImp implements ServiceUser, UserDetailsService {
 
-    private final EntityManager entityManager;
 
     private final UserRepositories userRepositories;
     private final RoleRepositories roleRepositories;
@@ -29,8 +26,7 @@ public class ServiceUserImp implements ServiceUser, UserDetailsService {
 
 
     @Autowired
-    public ServiceUserImp(EntityManager entityManager, UserRepositories userRepositories, RoleRepositories roleRepositories, PasswordEncoder passwordEncoder) {
-        this.entityManager = entityManager;
+    public ServiceUserImp(UserRepositories userRepositories, RoleRepositories roleRepositories, PasswordEncoder passwordEncoder) {
         this.userRepositories = userRepositories;
         this.roleRepositories = roleRepositories;
         this.passwordEncoder = passwordEncoder;
@@ -57,10 +53,7 @@ public class ServiceUserImp implements ServiceUser, UserDetailsService {
 
     @Override
     public List<User> findAll() {
-        try (Session session = entityManager.unwrap(Session.class)) {
-            return session.createQuery("select u from User u LEFT join fetch u.roleList", User.class).getResultList();
-        }
-//        return userRepositories.findAll();
+        return userRepositories.findAll();
     }
 
     @Override

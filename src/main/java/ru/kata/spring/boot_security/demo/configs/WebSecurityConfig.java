@@ -11,7 +11,6 @@ import ru.kata.spring.boot_security.demo.service.ServiceUserImp;
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    //private final AuthProvider authProvider;
 
     private final ServiceUserImp serviceUserImp;
 
@@ -51,20 +50,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // auth.authenticationProvider(authProvider); - кастомная проверка пользователя
         auth.userDetailsService(serviceUserImp).passwordEncoder(mvcConfig.passwordEncoder()); //так можно делать если наш класс имплеменит UserDetailsService
     }
+/*
+   аутентификация inMemory
+    @Bean
+    @Override
+    public UserDetailsService userDetailsService() {
+        UserDetails user =
+                User.withDefaultPasswordEncoder()
+                        .username("user")
+                        .password("user")
+                        .roles("USER")
+                        .build();
 
-    // аутентификация inMemory
-//    @Bean
-//    @Override
-//    public UserDetailsService userDetailsService() {
-//        UserDetails user =
-//                User.withDefaultPasswordEncoder()
-//                        .username("user")
-//                        .password("user")
-//                        .roles("USER")
-//                        .build();
-//
-//        return new InMemoryUserDetailsManager(user);
-//    }
+        return new InMemoryUserDetailsManager(user);
+    }
 
-
+ */
 }

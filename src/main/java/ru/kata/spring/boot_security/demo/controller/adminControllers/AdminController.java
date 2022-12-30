@@ -45,15 +45,11 @@ public class AdminController {
     }
 
     @PostMapping("/new")
-    public String createUser(@ModelAttribute @Valid User user, BindingResult bindingResult, Model model) {
+    public String createUser(@ModelAttribute @Valid User user, BindingResult bindingResult) {
         userValidator.validate(user, bindingResult);
         if (bindingResult.hasErrors()) {
             return "forAdmin/newUser";
         }
-//        if (!serviceUser.saveUser(user)) {
-//            model.addAttribute("usernameError", "Пользователь с таким именем уже существует");
-//            return "forAdmin/newUser";
-//        }
         serviceUser.saveUser(user);
         return "redirect:/admin/users";
     }
