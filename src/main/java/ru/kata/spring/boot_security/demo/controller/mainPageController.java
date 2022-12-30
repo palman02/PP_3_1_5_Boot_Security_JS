@@ -42,7 +42,7 @@ public class mainPageController {
         if (bindingResult.hasErrors()) {
             return "mainPage/registration";
         }
-        serviceUser.register(user);
+        serviceUser.saveUser(user);
         return "redirect:/login";
     }
 }

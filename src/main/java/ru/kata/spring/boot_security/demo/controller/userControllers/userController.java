@@ -3,10 +3,13 @@ package ru.kata.spring.boot_security.demo.controller.userControllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.service.ServiceUser;
 import ru.kata.spring.boot_security.demo.util.UserValidator;
+
+import javax.validation.Valid;
 
 
 @Controller
@@ -37,7 +40,11 @@ public class userController {
     }
 
     @PatchMapping("/{id}")
-    public String updateUser(@ModelAttribute("user") User user, @PathVariable int id) {
+    public String updateUser(@PathVariable int id, @ModelAttribute("user") @Valid User user, BindingResult bindingResult) {
+
+        if (bindingResult.hasErrors()) {
+            return "forUser/settings";
+        }
         serviceUser.update(id, user);
         return "redirect:/user/{id}";
     }

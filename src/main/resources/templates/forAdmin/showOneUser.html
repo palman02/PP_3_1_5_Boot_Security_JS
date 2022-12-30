@@ -5,8 +5,10 @@
     <title>User</title>
 </head>
 <body>
-    <p th:text="${user.getUsername()+ ', ' + user.getAge()}">VALUE</p>
+    <p th:text="${user.getUsername()}">VALUE</p>
+    <p th:text="${user.getName() + ' ' + user.getSurname()}">VALUE</p>
     <p th:text="${'Age: ' + user.getAge()}">VALUE</p>
+    <p th:text="${'Role: ' + user.getRoleList()}">VALUE</p>
     <p th:text="${'Id: ' + user.getId()}">VALUE</p>
 
     <form th:method="GET" th:action="@{/admin/user/{id}/edit(id = ${user.getId()})}">

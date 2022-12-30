@@ -15,6 +15,7 @@ public class MvcConfig implements WebMvcConfigurer {
     }
 
     //делаю бин здесь, потому что если делать в классе WebSecurity, то выходит ошибка про зацикливание бинов
+    //spring.main.allow-circular-references=true почему то не помог, выходила ошибка
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

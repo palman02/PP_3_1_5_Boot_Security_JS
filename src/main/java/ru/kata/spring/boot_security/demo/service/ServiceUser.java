@@ -16,6 +16,4 @@ public interface ServiceUser {
 
     void deleteUser(int id);
 
-    void register(User user);
-
 }

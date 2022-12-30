@@ -3,10 +3,13 @@ package ru.kata.spring.boot_security.demo.controller.adminControllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.service.ServiceUser;
 import ru.kata.spring.boot_security.demo.util.UserValidator;
+
+import javax.validation.Valid;
 
 
 @Controller
@@ -42,7 +45,15 @@ public class AdminController {
     }
 
     @PostMapping("/new")
-    public String createUser(@ModelAttribute User user) {
+    public String createUser(@ModelAttribute @Valid User user, BindingResult bindingResult, Model model) {
+        userValidator.validate(user, bindingResult);
+        if (bindingResult.hasErrors()) {
+            return "forAdmin/newUser";
+        }
+//        if (!serviceUser.saveUser(user)) {
+//            model.addAttribute("usernameError", "Пользователь с таким именем уже существует");
+//            return "forAdmin/newUser";
+//        }
         serviceUser.saveUser(user);
         return "redirect:/admin/users";
     }
@@ -54,7 +65,10 @@ public class AdminController {
     }
 
     @PatchMapping("/user/{id}")
-    public String updateUser(@ModelAttribute("user") User user, @PathVariable int id) {
+    public String updateUser(@PathVariable int id, @ModelAttribute("user") @Valid User user, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "/forAdmin/editUser";
+        }
         serviceUser.update(id, user);
         return "redirect:/admin/users";
     }

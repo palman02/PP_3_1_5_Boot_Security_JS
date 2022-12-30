@@ -4,10 +4,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.util.*;
 
 @Entity
@@ -37,11 +34,11 @@ public class User implements UserDetails {
     private int age;
 
     @Column(nullable = false)
-    @Min(value = 5, message = "Пароль должен быть не менее 5 символов")
+    @Size(min = 5, message = "Пароль должен быть не менее 5 символов")
     private String password;
 
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     @JoinTable (
             name = "User_Role",
             joinColumns = @JoinColumn(name = "user_id"),
