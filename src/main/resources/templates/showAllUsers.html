@@ -99,29 +99,47 @@
                                                                     </button>
                                                                 </div>
 
-                                                                <form  th:method="PATCH" th:action="@{/admin/user/edit/{id}(id=${user.getId()})}" th:object="${user}">
+                                                                <form class="needs-validation" novalidate th:method="PATCH" th:action="@{/admin/user/edit/{id}(id=${user.getId()})}" th:object="${user}">
                                                                     <div class="modal-body text-center pt-3">
                                                                         <div class="container-fluid align-middle w-50">
                                                                             <label for="Edit_id" class="form-label text-center h6"><b>ID</b></label>
                                                                             <input type="text" th:value="${user.getId()}" class="form-control" id="Edit_id" placeholder="ID" aria-describedby="basic-addon1" disabled>
+                                                                            <div class="valid-feedback">
+                                                                                Looks good!
+                                                                            </div>
 
                                                                             <label for="Edit_first_name" class="form-label text-center pt-3 h6"><b>First name</b></label>
-                                                                            <input type="text" th:value="${user.firstName}" class="form-control" id="Edit_first_name" placeholder="First name" aria-describedby="basic-addon1">
+                                                                            <input type="text" th:name = "firstName" th:value="${user.firstName}" class="form-control" id="Edit_first_name" placeholder="First name" aria-describedby="basic-addon1" required>
+                                                                            <div class="valid-feedback">
+                                                                                Looks good!
+                                                                            </div>
 
                                                                             <label for="Edit_last_name" class="form-label text-center pt-3 h6"><b>Last name</b></label>
-                                                                            <input type="text" th:value="${user.lastName}" class="form-control" id="Edit_last_name" placeholder="Last name" aria-describedby="basic-addon1">
+                                                                            <input type="text" th:name = "lastName" th:value="${user.lastName}" class="form-control" id="Edit_last_name" placeholder="Last name" aria-describedby="basic-addon1" required>
+                                                                            <div class="valid-feedback">
+                                                                                Looks good!
+                                                                            </div>
 
                                                                             <label for="Edit_age" class="form-label text-center pt-3 h6"><b>Age name</b></label>
-                                                                            <input type="number" th:value="${user.age}" class="form-control" id="Edit_age" placeholder="Age" aria-describedby="basic-addon1">
+                                                                            <input type="number" th:name = "age" th:value="${user.age}" class="form-control" id="Edit_age" placeholder="Age" aria-describedby="basic-addon1" required>
+                                                                            <div class="valid-feedback">
+                                                                                Looks good!
+                                                                            </div>
 
                                                                             <label for="Edit_email" class="form-label text-center pt-3 h6"><b>Email name</b></label>
-                                                                            <input type="email" th:value="${user.email}" class="form-control" id="Edit_email" placeholder="Email" aria-describedby="basic-addon1">
+                                                                            <input type="email" th:name = "email" th:value="${user.email}" class="form-control" id="Edit_email" placeholder="Email" aria-describedby="basic-addon1" required>
+                                                                            <div class="valid-feedback">
+                                                                                Looks good!
+                                                                            </div>
 
                                                                             <label for="Edit_password" class="form-label text-center pt-3 h6"><b>Password</b></label>
-                                                                            <input type="password" th:value="${user.password}" class="form-control" id="Edit_password" placeholder="Password" aria-describedby="basic-addon1">
+                                                                            <input type="password" th:name = "password" class="form-control" id="Edit_password" placeholder="Password" aria-describedby="basic-addon1" required>
+                                                                            <div class="valid-feedback">
+                                                                                Looks good!
+                                                                            </div>
 
                                                                             <label for="Edit_rolesId" class="form-label text-center pt-3 h6"><b>Role</b></label>
-                                                                            <select size="2" th:value="${user.roleList}" multiple
+                                                                            <select size="2" th:name = "roleList" th:value="${user.roleList}" multiple
                                                                                     class="form-control"
                                                                                     id="Edit_rolesId" name="listRoles" required>
                                                                                 <option th:each="oneRole : ${roles}"
@@ -149,7 +167,7 @@
                                                                     </button>
                                                                 </div>
 
-                                                                <form  th:method="DELETE" th:action="@{/admin/user/{id}(id = ${user.getId()})}" th:object="${user}">
+                                                                <form th:method="DELETE" th:action="@{/admin/user/{id}(id = ${user.getId()})}" th:object="${user}">
                                                                     <div class="modal-body text-center pt-3">
                                                                         <div class="container-fluid align-middle w-50">
                                                                             <label for="Edit_id1" class="form-label text-center h6"><b>ID</b></label>
@@ -157,19 +175,18 @@
 
                                                                             <label for="Edit_first_name1" class="form-label text-center pt-3 h6"><b>First name</b></label>
                                                                             <input type="text" th:value="${user.firstName}"  class="form-control" id="Edit_first_name1" placeholder="First name" aria-describedby="basic-addon1" disabled>
-                                                                            <!--                                                                                        <div style="color:red" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">First name error</div>-->
+
 
                                                                             <label for="Edit_last_name1" class="form-label text-center pt-3 h6"><b>Last name</b></label>
                                                                             <input type="text" th:value="${user.lastName}" class="form-control" id="Edit_last_name1" placeholder="Last name" aria-describedby="basic-addon1" disabled>
-                                                                            <!--                                                                                        <div style="color:red" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">Last name error</div>-->
+
 
                                                                             <label for="Edit_age1" class="form-label text-center pt-3 h6"><b>Age name</b></label>
                                                                             <input type="number" th:value="${user.age}" class="form-control" id="Edit_age1" placeholder="Age" aria-describedby="basic-addon1" disabled>
-                                                                            <!--                                                                                        <div style="color:red" th:if="${#fields.hasErrors('age')}" th:errors="*{age}">Age name error</div>-->
+
 
                                                                             <label for="Edit_email1" class="form-label text-center pt-3 h6"><b>Email name</b></label>
                                                                             <input type="email" th:value="${user.email}" class="form-control" id="Edit_email1" placeholder="Email" aria-describedby="basic-addon1" disabled>
-                                                                            <!--                                                                                        <div style="color:red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email error</div>-->
 
                                                                             <label for="Edit_rolesId1" class="form-label text-center pt-3 h6"><b>Role</b></label>
                                                                             <select size="2" th:value="${user.roleList}" multiple
@@ -201,28 +218,38 @@
                                             <h4 class="text-start px-4">Add new user</h4>
                                         </div>
                                         <div class="m-4">
-                                            <form class="input-group align-items-center pt-2" th:method="POST" th:action="@{/admin/new}" th:object="${newUser}">
+                                            <form class="input-group align-items-center pt-2 needs-validation" novalidate th:method="POST" th:action="@{/admin/new}" th:object="${newUser}" >
                                                 <div class="d-flex flex-column align-items-center w-25 mx-auto">
 
                                                     <label for="first_name" class="form-label text-center h5"><b>First name</b></label>
-                                                    <input type="text" th:field="*{firstName}" class="form-control" id="first_name" placeholder="First name" aria-describedby="basic-addon1">
-<!--                                                    <div style="color:red" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">First name error</div>-->
+                                                    <input type="text" th:field="*{firstName}" class="form-control" id="first_name" placeholder="First name" aria-describedby="basic-addon1" required>
+                                                    <div class="valid-feedback">
+                                                        Looks good!
+                                                    </div>
 
                                                     <label for="last_name" class="form-label text-center pt-2 h5"><b>Last name</b></label>
-                                                    <input type="text" th:field="*{lastName}" class="form-control" id="last_name" placeholder="Last name" aria-describedby="basic-addon1">
-<!--                                                    <div style="color:red" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">Last name error</div>-->
+                                                    <input type="text" th:field="*{lastName}" class="form-control" id="last_name" placeholder="Last name" aria-describedby="basic-addon1" required>
+                                                    <div class="valid-feedback">
+                                                        Looks good!
+                                                    </div>
 
                                                     <label for="age" class="form-label text-center pt-2 h5"><b>Age name</b></label>
-                                                    <input type="number" th:field="*{age}" class="form-control" id="age" placeholder="Age" aria-describedby="basic-addon1">
-<!--                                                    <div style="color:red" th:if="${#fields.hasErrors('age')}" th:errors="*{age}">Age name error</div>-->
+                                                    <input type="number" th:field="*{age}" class="form-control" id="age" placeholder="Age" aria-describedby="basic-addon1" required>
+                                                    <div class="valid-feedback">
+                                                        Looks good!
+                                                    </div>
 
                                                     <label for="email" class="form-label text-center pt-2 h5"><b>Email name</b></label>
-                                                    <input type="email" th:field="*{email}" class="form-control" id="email" placeholder="Email" aria-describedby="basic-addon1">
-<!--                                                    <div style="color:red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email error</div>-->
+                                                    <input type="email" th:field="*{email}" class="form-control" id="email" placeholder="Email" aria-describedby="basic-addon1" required>
+                                                    <div class="valid-feedback">
+                                                        Looks good!
+                                                    </div>
 
                                                     <label for="password" class="form-label text-center pt-2 h5"><b>Password</b></label>
-                                                    <input type="password" th:field="*{password}" class="form-control" id="password" placeholder="Password" aria-describedby="basic-addon1">
-<!--                                                    <div style="color:red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password error</div>-->
+                                                    <input type="password" th:field="*{password}" class="form-control" id="password" placeholder="Password" aria-describedby="basic-addon1" required>
+                                                    <div class="valid-feedback">
+                                                        Looks good!
+                                                    </div>
 
                                                     <label for="rolesId" class="form-label text-center pt-2 h5"><b>Role</b></label>
                                                     <select size="2" th:field="*{roleList}" multiple
@@ -242,7 +269,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">...</div>
                             </div>
                         </div>
                     </div>
@@ -251,6 +277,27 @@
         </div>
     </div>
 
+
+    <script>
+        // Example starter JavaScript for disabling form submissions if there are invalid fields
+        (function() {
+            'use strict';
+            window.addEventListener('load', function() {
+                // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                var forms = document.getElementsByClassName('needs-validation');
+                // Loop over them and prevent submission
+                var validation = Array.prototype.filter.call(forms, function(form) {
+                    form.addEventListener('submit', function(event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
+    </script>
 
 
 

@@ -4,7 +4,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
 import java.util.*;
 
 @Entity
@@ -15,22 +14,16 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-//    @NotBlank(message = "Поле никнейм не должно быть пустым")
-//    @Size(min = 2, max = 100, message = "Никнейм должно быть от 2 до 100 символов длиной")
     @Column(name = "first_name", nullable = false)
     private String firstName;
 
 
-//    @Size(min = 2, max = 100, message = "Имя должно быть от 2 до 100 символов длиной")
     @Column(name = "last_name", nullable = false)
     private String lastName;
 
     @Column(nullable = false)
-//    @Min(value = 0, message = "Возраст не может быть меньше 0")
-//    @Max(value = 120, message = "Возраст не может быть больше 120")
     private int age;
 
-//    @Email
     @Column(nullable = false, unique = true)
     private String email;
 

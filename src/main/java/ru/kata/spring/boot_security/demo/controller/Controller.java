@@ -2,27 +2,21 @@ package ru.kata.spring.boot_security.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.service.ServiceUser;
-import ru.kata.spring.boot_security.demo.util.UserValidator;
 
 
-@Controller
-public class AdminController {
+@org.springframework.stereotype.Controller
+public class Controller {
 
     private final ServiceUser serviceUser;
 
-    private final UserValidator userValidator;
-
-
     @Autowired
-    public AdminController(ServiceUser serviceUser, UserValidator userValidator) {
+    public Controller(ServiceUser serviceUser) {
         this.serviceUser = serviceUser;
-        this.userValidator = userValidator;
     }
 
     @GetMapping("admin/users")
@@ -36,17 +30,12 @@ public class AdminController {
 
     @GetMapping("/user/{id}")
     public String showOneUser(@PathVariable int id, @AuthenticationPrincipal User user, Model model) {
-//        model.addAttribute("user", serviceUser.findOne(id));
         model.addAttribute("currentUser", user);
         return "showOneUser";
     }
 
     @PostMapping("admin/new")
     public String createUser(@ModelAttribute User user, BindingResult bindingResult) {
-//        userValidator.validate(user, bindingResult);
-//        if (bindingResult.hasErrors()) {
-//            return "forAdmin/showAllUsers";
-//        }
         serviceUser.saveUser(user);
         return "redirect:/admin/users";
     }
@@ -70,5 +59,10 @@ public class AdminController {
     public String deleteUser(@PathVariable("id") int id) {
         serviceUser.deleteUser(id);
         return "redirect:/admin/users";
+    }
+
+    @GetMapping("/login")
+    public String loginPage() {
+        return "login";
     }
 }
