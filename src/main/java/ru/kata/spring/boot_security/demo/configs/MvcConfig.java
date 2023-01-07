@@ -11,13 +11,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class MvcConfig implements WebMvcConfigurer {
 
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/user").setViewName("/forUser/userPage");
-    }
-
-    //делаю бин здесь, потому что если делать в классе WebSecurity, то выходит ошибка про зацикливание бинов
-    //spring.main.allow-circular-references=true почему то не помог, выходила ошибка
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+        registry.addViewController("/user").setViewName("/showOneUser");
     }
 }

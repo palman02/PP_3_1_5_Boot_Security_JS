@@ -1,28 +1,29 @@
 package ru.kata.spring.boot_security.demo.configs;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import ru.kata.spring.boot_security.demo.service.ServiceUserImp;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 
-    private final ServiceUserImp serviceUserImp;
+    private final UserDetailsService userDetailsService;
 
     private final SuccessUserHandler successUserHandler;
 
-    private final MvcConfig mvcConfig;
 
     @Autowired
-    public WebSecurityConfig(ServiceUserImp serviceUserImp, SuccessUserHandler successUserHandler, MvcConfig mvcConfig) {
-        this.serviceUserImp = serviceUserImp;
+    public WebSecurityConfig(UserDetailsService userDetailsService, SuccessUserHandler successUserHandler) {
+        this.userDetailsService = userDetailsService;
         this.successUserHandler = successUserHandler;
-        this.mvcConfig = mvcConfig;
     }
 
     @Override
@@ -30,7 +31,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/login", "/error", "/registration").permitAll()
-                .antMatchers("/admin/**").hasRole("ADMIN")
+                .antMatchers("/admin/**", "/user/**").hasRole("ADMIN")
                 .antMatchers("/user/**").hasRole("USER")
                 .anyRequest().authenticated()
                 .and()
@@ -48,7 +49,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         //настраивает аутенфикацию
         // auth.authenticationProvider(authProvider); - кастомная проверка пользователя
-        auth.userDetailsService(serviceUserImp).passwordEncoder(mvcConfig.passwordEncoder()); //так можно делать если наш класс имплеменит UserDetailsService
+        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder()); //так можно делать если наш класс имплеменит UserDetailsService
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 /*
    аутентификация inMemory

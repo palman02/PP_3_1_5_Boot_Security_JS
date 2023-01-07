@@ -15,23 +15,24 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @NotBlank(message = "Поле никнейм не должно быть пустым")
-    @Size(min = 2, max = 100, message = "Никнейм должно быть от 2 до 100 символов длиной")
-    @Column(name = "Username", nullable = false, unique = true)
-    private String userName;
+//    @NotBlank(message = "Поле никнейм не должно быть пустым")
+//    @Size(min = 2, max = 100, message = "Никнейм должно быть от 2 до 100 символов длиной")
+    @Column(name = "first_name", nullable = false)
+    private String firstName;
+
+
+//    @Size(min = 2, max = 100, message = "Имя должно быть от 2 до 100 символов длиной")
+    @Column(name = "last_name", nullable = false)
+    private String lastName;
 
     @Column(nullable = false)
-    @Size(min = 2, max = 100, message = "Имя должно быть от 2 до 100 символов длиной")
-    private String name;
-
-    @Column(nullable = false)
-    @Size(min = 2, max = 100, message = "Имя должно быть от 2 до 100 символов длиной")
-    private String surname;
-
-    @Column(nullable = false)
-    @Min(value = 0, message = "Возраст не может быть меньше 0")
-    @Max(value = 120, message = "Возраст не может быть больше 120")
+//    @Min(value = 0, message = "Возраст не может быть меньше 0")
+//    @Max(value = 120, message = "Возраст не может быть больше 120")
     private int age;
+
+//    @Email
+    @Column(nullable = false, unique = true)
+    private String email;
 
     @Column(nullable = false)
     private String password;
@@ -43,45 +44,17 @@ public class User implements UserDetails {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
-    private List<Role> roleList = new LinkedList<>();
+    private Set<Role> roleList = new LinkedHashSet<>();
 
     public User() {
     }
 
-    public User(String userName, String name, String surname, int age, String password) {
-        this.userName = userName;
-        this.surname = surname;
-        this.name = name;
+    public User(String firstName, String lastName, int age, String email, String password) {
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.age = age;
+        this.email = email;
         this.password = password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public List<Role> getRoleList() {
-        return roleList;
-    }
-
-    public void setRoleList(List<Role> roleSet) {
-        this.roleList = roleSet;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
     }
 
     public int getId() {
@@ -92,12 +65,20 @@ public class User implements UserDetails {
         this.id = id;
     }
 
-    public String getSurname() {
-        return surname;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setSurname(String surname) {
-        this.surname = surname;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public int getAge() {
@@ -108,6 +89,29 @@ public class User implements UserDetails {
         this.age = age;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Set<Role> getRoleList() {
+        return roleList;
+    }
+
+    public void setRoleList(Set<Role> roleList) {
+        this.roleList = roleList;
+    }
+
+    public String getRole() {
+        return roleList.toString().substring(1, roleList.toString().length() - 1);
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -121,7 +125,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return userName;
+        return email;
     }
 
     @Override
@@ -150,23 +154,24 @@ public class User implements UserDetails {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return id == user.id && age == user.age && Objects.equals(userName, user.userName) && Objects.equals(surname, user.surname);
+        return id == user.id && age == user.age && Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, userName, surname, age);
+        return Objects.hash(id, firstName, lastName, age);
     }
 
     @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", userName='" + userName + '\'' +
-                ", name='" + name + '\'' +
-                ", surname='" + surname + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
                 ", age=" + age +
+                ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
+                ", roleList=" + roleList +
                 '}';
     }
 }

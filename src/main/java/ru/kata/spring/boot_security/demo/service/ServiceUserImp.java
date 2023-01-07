@@ -13,11 +13,12 @@ import ru.kata.spring.boot_security.demo.repositories.RoleRepositories;
 import ru.kata.spring.boot_security.demo.repositories.UserRepositories;
 import javax.annotation.PostConstruct;
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 @Service
 @Transactional(readOnly = true)
-public class ServiceUserImp implements ServiceUser, UserDetailsService {
+public class ServiceUserImp implements ServiceUser {
 
 
     private final UserRepositories userRepositories;
@@ -33,24 +34,6 @@ public class ServiceUserImp implements ServiceUser, UserDetailsService {
     }
 
 
-    //Создаю админа и роли
-    @PostConstruct
-    @Transactional
-    public void doInit() {
-        if (userRepositories.findAll().size() == 0) {
-            User user = new User("Main_admin", "admin", "admin", 0, "admin");
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
-            Role roleUser = new Role("ROLE_USER");
-            Role roleAdmin = new Role("ROLE_ADMIN");
-            roleRepositories.save(roleAdmin);
-            roleRepositories.save(roleUser);
-            userRepositories.save(user);
-            user.getRoleList().add(roleRepositories.findRoleByRole("ROLE_ADMIN"));
-            userRepositories.save(user);
-
-        }
-    }
-
     @Override
     public List<User> findAll() {
         return userRepositories.findAll();
@@ -65,7 +48,9 @@ public class ServiceUserImp implements ServiceUser, UserDetailsService {
     @Transactional
     public void saveUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.getRoleList().add(roleRepositories.findRoleByRole("ROLE_USER"));
+        if (user.getRoleList().contains(roleRepositories.findRoleByRole("ROLE_ADMIN"))) {
+            user.getRoleList().add(roleRepositories.findRoleByRole("ROLE_USER"));
+        }
         userRepositories.save(user);
     }
 
@@ -74,7 +59,6 @@ public class ServiceUserImp implements ServiceUser, UserDetailsService {
     public void update(int id, User updatedUser) {
         updatedUser.setId(id);
         updatedUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
-        updatedUser.getRoleList().add(roleRepositories.findRoleByRole("ROLE_USER")); // Делается для того чтобы, при обновлении юзера его список не оказался пустым
         userRepositories.save(updatedUser);
     }
 
@@ -84,13 +68,8 @@ public class ServiceUserImp implements ServiceUser, UserDetailsService {
         userRepositories.deleteById(id);
     }
 
-
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<User> user = userRepositories.findByUserName(username);
-        if (user.isEmpty()) {
-            throw new UsernameNotFoundException("User not found!");
-        }
-        return user.get();
+    public Set<Role> getRole() {
+        return new HashSet<>(roleRepositories.findAll());
     }
 }
