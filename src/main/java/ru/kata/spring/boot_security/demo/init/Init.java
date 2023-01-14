@@ -30,15 +30,20 @@ public class Init {
     @Transactional
     public void doInit() {
         if (userRepositories.findAll().size() == 0) {
-            User user = new User("admin", "admin", 0, "admin@mail.ru", "admin");
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
             Role roleUser = new Role("ROLE_USER");
             Role roleAdmin = new Role("ROLE_ADMIN");
+            User user = new User();
+            user.setAge(0);
+            user.setEmail("admin@mail.ru");
+            user.setFirstName("admin");
+            user.setLastName("admin");
+            user.setPassword(passwordEncoder.encode("admin"));
+
             roleRepositories.save(roleAdmin);
             roleRepositories.save(roleUser);
             userRepositories.save(user);
-            user.getRoleList().add(roleRepositories.findRoleByRole("ROLE_ADMIN"));
-            user.getRoleList().add(roleRepositories.findRoleByRole("ROLE_USER"));
+            user.getRoles().add(roleRepositories.findRoleByRole("ROLE_ADMIN"));
+            user.getRoles().add(roleRepositories.findRoleByRole("ROLE_USER"));
             userRepositories.save(user);
 
         }

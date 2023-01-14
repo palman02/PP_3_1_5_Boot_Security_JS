@@ -44,8 +44,8 @@ public class ServiceUserImp implements ServiceUser {
     @Transactional
     public void saveUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        if (user.getRoleList().contains(roleRepositories.findRoleByRole("ROLE_ADMIN"))) {
-            user.getRoleList().add(roleRepositories.findRoleByRole("ROLE_USER"));
+        if (user.getRoles().contains(roleRepositories.findRoleByRole("ROLE_ADMIN"))) {
+            user.getRoles().add(roleRepositories.findRoleByRole("ROLE_USER"));
         }
         userRepositories.save(user);
     }
@@ -55,8 +55,8 @@ public class ServiceUserImp implements ServiceUser {
     public void update(int id, User updatedUser) {
         updatedUser.setId(id);
         updatedUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
-        if (updatedUser.getRoleList().contains(roleRepositories.findRoleByRole("ROLE_ADMIN"))) {
-            updatedUser.getRoleList().add(roleRepositories.findRoleByRole("ROLE_USER"));
+        if (updatedUser.getRoles().contains(roleRepositories.findRoleByRole("ROLE_ADMIN"))) {
+            updatedUser.getRoles().add(roleRepositories.findRoleByRole("ROLE_USER"));
         }
         userRepositories.save(updatedUser);
     }

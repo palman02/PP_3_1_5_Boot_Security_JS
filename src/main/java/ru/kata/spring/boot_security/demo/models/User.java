@@ -1,10 +1,13 @@
 package ru.kata.spring.boot_security.demo.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Entity
 @Table
@@ -30,24 +33,25 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private String password;
 
-
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+    @JsonIgnore
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable (
             name = "User_Role",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
-    private Set<Role> roleList = new LinkedHashSet<>();
+    private Set<Role> roles = new HashSet<>();
 
     public User() {
     }
 
-    public User(String firstName, String lastName, int age, String email, String password) {
+    public User(String firstName, String lastName, int age, String email, String password, Set<Role> roles) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.age = age;
         this.email = email;
         this.password = password;
+        this.roles = roles;
     }
 
     public int getId() {
@@ -94,21 +98,24 @@ public class User implements UserDetails {
         this.password = password;
     }
 
-    public Set<Role> getRoleList() {
-        return roleList;
+
+    public Set<Role> getRoles() {
+        return roles;
     }
 
-    public void setRoleList(Set<Role> roleList) {
-        this.roleList = roleList;
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 
-    public String getRole() {
-        return roleList.toString().substring(1, roleList.toString().length() - 1);
+    public String getShortRole() {
+        return roles.toString().substring(1, roles.toString().length() - 1);
     }
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return roleList;
+        return roles.stream().map(role -> new SimpleGrantedAuthority(role.getRole())).collect(Collectors.toList());
     }
 
     @Override
@@ -164,7 +171,7 @@ public class User implements UserDetails {
                 ", age=" + age +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
-                ", roleList=" + roleList +
+                ", roles=" + roles +
                 '}';
     }
 }
