@@ -56,7 +56,7 @@
                                         <h4 class="text-start px-4">All users</h4>
                                     </div>
                                     <div class="tab-content bg-white pt-4 px-4 pb-4">
-                                        <table class="table table-striped ">
+                                        <table class="table table-striped">
                                             <thead>
                                             <tr>
                                                 <th scope="col">ID</th>
@@ -72,6 +72,8 @@
                                             <tbody id="AllUsers">
                                             </tbody>
                                         </table>
+
+<!--                                        Edit user-->
                                         <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-centered" role="document">
                                                 <div class="modal-content" >
@@ -81,65 +83,64 @@
                                                             <span aria-hidden="true">&times;</span>
                                                         </button>
                                                     </div>
-
-                                                    <form class="needs-validation" novalidate th:method="PATCH" action="/admin/user/edit/2">
+                                                    <form class="needs-validation" id="formEdit">
                                                         <div class="modal-body text-center pt-3">
                                                             <div class="container-fluid align-middle w-50">
                                                                 <label for="Edit_id" class="form-label text-center h6"><b>ID</b></label>
-                                                                <input type="text" value="id" class="form-control" id="Edit_id" placeholder="ID" aria-describedby="basic-addon1" disabled>
+                                                                <input type="text" name="id" class="form-control" id="Edit_id" placeholder="ID" aria-describedby="basic-addon1" disabled>
                                                                 <div class="valid-feedback">
                                                                     Looks good!
                                                                 </div>
 
                                                                 <label for="Edit_first_name" class="form-label text-center pt-3 h6"><b>First name</b></label>
-                                                                <input type="text" th:name = "firstName" value="firstName" class="form-control" id="Edit_first_name" placeholder="First name" aria-describedby="basic-addon1" required>
+                                                                <input type="text" name = "firstName"  class="form-control" id="Edit_first_name" placeholder="First name" aria-describedby="basic-addon1" required>
                                                                 <div class="valid-feedback">
                                                                     Looks good!
                                                                 </div>
 
                                                                 <label for="Edit_last_name" class="form-label text-center pt-3 h6"><b>Last name</b></label>
-                                                                <input type="text" th:name = "lastName" value="lastName" class="form-control" id="Edit_last_name" placeholder="Last name" aria-describedby="basic-addon1" required>
+                                                                <input type="text" name = "lastName" class="form-control" id="Edit_last_name" placeholder="Last name" aria-describedby="basic-addon1" required>
                                                                 <div class="valid-feedback">
                                                                     Looks good!
                                                                 </div>
 
                                                                 <label for="Edit_age" class="form-label text-center pt-3 h6"><b>Age name</b></label>
-                                                                <input type="number" th:name = "age" value="age" class="form-control" id="Edit_age" placeholder="Age" aria-describedby="basic-addon1" required>
+                                                                <input type="number" name = "age" class="form-control" id="Edit_age" placeholder="Age" aria-describedby="basic-addon1" required>
                                                                 <div class="valid-feedback">
                                                                     Looks good!
                                                                 </div>
 
                                                                 <label for="Edit_email" class="form-label text-center pt-3 h6"><b>Email name</b></label>
-                                                                <input type="email" th:name = "email" value="email" class="form-control" id="Edit_email" placeholder="Email" aria-describedby="basic-addon1" required>
+                                                                <input type="email" name = "email" class="form-control" id="Edit_email" placeholder="Email" aria-describedby="basic-addon1" required>
                                                                 <div class="valid-feedback">
                                                                     Looks good!
                                                                 </div>
 
                                                                 <label for="Edit_password" class="form-label text-center pt-3 h6"><b>Password</b></label>
-                                                                <input type="password" th:name = "password" class="form-control" id="Edit_password" placeholder="Password" aria-describedby="basic-addon1" required>
+                                                                <input type="password" name = "password" class="form-control" id="Edit_password" placeholder="Password" aria-describedby="basic-addon1" required>
                                                                 <div class="valid-feedback">
                                                                     Looks good!
                                                                 </div>
 
                                                                 <label for="Edit_rolesId" class="form-label text-center pt-3 h6"><b>Role</b></label>
-                                                                <select size="2" th:name = "roles" multiple
+                                                                <select size="2" name = "roles" multiple
                                                                         class="form-control"
-                                                                        id="Edit_rolesId" name="listRoles" required>
-<!--                                                                    <option th:each="oneRole : ${roles}"-->
-<!--                                                                            th:text="${oneRole.getRole().substring(5)}"-->
-<!--                                                                            th:value="${oneRole.getId()}">Role-->
-<!--                                                                    </option>-->
+                                                                        id="Edit_rolesId" required>
+                                                                    <option value="1">ADMIN</option>
+                                                                    <option value="2">USER</option>
                                                                 </select>
                                                             </div>
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                            <button type="button" id="closeEdit" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                                             <button type="submit" class="btn btn-primary">Edit</button>
                                                         </div>
                                                     </form>
                                                 </div>
                                             </div>
                                         </div>
+
+<!--                                    Delete User                   -->
                                         <div class="modal fade" id="delete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-centered" role="document">
                                                 <div class="modal-content" >
@@ -150,40 +151,38 @@
                                                         </button>
                                                     </div>
 
-                                                    <form th:method="DELETE" action="/admin/user/2">
+                                                    <form id="formDelete">
                                                         <div class="modal-body text-center pt-3">
                                                             <div class="container-fluid align-middle w-50">
                                                                 <label for="Edit_id1" class="form-label text-center h6"><b>ID</b></label>
-                                                                <input type="text" value="id" class="form-control" id="Edit_id1" placeholder="ID" aria-describedby="basic-addon1" disabled>
+                                                                <input type="text" name="id" class="form-control" id="Edit_id1" placeholder="ID" aria-describedby="basic-addon1" disabled>
 
                                                                 <label for="Edit_first_name1" class="form-label text-center pt-3 h6"><b>First name</b></label>
-                                                                <input type="text" value="firstName"  class="form-control" id="Edit_first_name1" placeholder="First name" aria-describedby="basic-addon1" disabled>
+                                                                <input type="text" name="firstName"  class="form-control" id="Edit_first_name1" placeholder="First name" aria-describedby="basic-addon1" disabled>
 
 
                                                                 <label for="Edit_last_name1" class="form-label text-center pt-3 h6"><b>Last name</b></label>
-                                                                <input type="text" value="lastName" class="form-control" id="Edit_last_name1" placeholder="Last name" aria-describedby="basic-addon1" disabled>
+                                                                <input type="text" name="lastName" class="form-control" id="Edit_last_name1" placeholder="Last name" aria-describedby="basic-addon1" disabled>
 
 
                                                                 <label for="Edit_age1" class="form-label text-center pt-3 h6"><b>Age name</b></label>
-                                                                <input type="number" value="age" class="form-control" id="Edit_age1" placeholder="Age" aria-describedby="basic-addon1" disabled>
+                                                                <input type="number" name="age" class="form-control" id="Edit_age1" placeholder="Age" aria-describedby="basic-addon1" disabled>
 
 
                                                                 <label for="Edit_email1" class="form-label text-center pt-3 h6"><b>Email name</b></label>
-                                                                <input type="email" value="email" class="form-control" id="Edit_email1" placeholder="Email" aria-describedby="basic-addon1" disabled>
+                                                                <input type="email" name="email" class="form-control" id="Edit_email1" placeholder="Email" aria-describedby="basic-addon1" disabled>
 
                                                                 <label for="Edit_rolesId1" class="form-label text-center pt-3 h6"><b>Role</b></label>
                                                                 <select size="2" multiple
                                                                         class="form-control"
-                                                                        id="Edit_rolesId1" name="listRoles" required disabled>
-<!--                                                                    <option th:each="oneRole : ${roles}"-->
-<!--                                                                            th:text="${oneRole.getRole().substring(5)}"-->
-<!--                                                                            th:value="${oneRole.getId()}">Role-->
-<!--                                                                    </option>-->
+                                                                        id="Edit_rolesId1" name="roles" required disabled>
+                                                                    <option value="1">ADMIN</option>
+                                                                    <option value="2">USER</option>
                                                                 </select>
                                                             </div>
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                            <button type="button" id="closeDelete" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                                             <button type="submit" class="btn btn-danger">Delete</button>
                                                         </div>
                                                     </form>
@@ -291,6 +290,10 @@
     <script src="../static/currentUser.js"></script>
     <script src="../static/tableUsers.js"></script>
     <script src="../static/newUser.js"></script>
+    <script src="../static/deleteUser.js"></script>
+    <script src="../static/getOneUser.js"></script>
+    <script src="../static/modal.js"></script>
+    <script src="../static/editUser.js"></script>
 
 </body>
 </html>

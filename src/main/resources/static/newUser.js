@@ -1,3 +1,4 @@
+'use strict';
 
 let form = document.forms["create"];
 createNewUser()
@@ -9,7 +10,7 @@ function createNewUser() {
         for (let i = 0; i < form.roles.options.length; i++) {
             if (form.roles.options[i].selected) roles.push({
                 id: form.roles.value,
-                name: "ROLE_" + form.roles.options[i].text
+                role: "ROLE_" + form.roles.options[i].text
             });
         }
 
