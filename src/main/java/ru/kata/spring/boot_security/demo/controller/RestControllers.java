@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.service.ServiceUser;
@@ -12,7 +11,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/adminApi")
 public class RestControllers {
 
     private final ServiceUser serviceUser;
@@ -50,10 +49,5 @@ public class RestControllers {
     public ResponseEntity<HttpStatus> deleteUser(@PathVariable int id) {
         serviceUser.deleteUser(id);
         return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    @GetMapping("/auth")
-    public ResponseEntity<User> getAuthUser(@AuthenticationPrincipal User user) {
-        return ResponseEntity.ok(user);
     }
 }

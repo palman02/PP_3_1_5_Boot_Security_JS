@@ -14,7 +14,7 @@ function createNewUser() {
             });
         }
 
-        fetch("http://localhost:8080/api/user", {
+        fetch("http://localhost:8080/adminApi/user", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

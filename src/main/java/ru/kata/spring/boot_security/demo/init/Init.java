@@ -45,7 +45,6 @@ public class Init {
             user.getRoles().add(roleRepositories.findRoleByRole("ROLE_ADMIN"));
             user.getRoles().add(roleRepositories.findRoleByRole("ROLE_USER"));
             userRepositories.save(user);
-
         }
     }
 }

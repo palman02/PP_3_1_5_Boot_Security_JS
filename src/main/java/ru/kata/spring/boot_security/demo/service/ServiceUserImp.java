@@ -4,9 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
-import ru.kata.spring.boot_security.demo.repositories.RoleRepositories;
 import ru.kata.spring.boot_security.demo.repositories.UserRepositories;
 import java.util.*;
 
@@ -18,14 +16,12 @@ public class ServiceUserImp implements ServiceUser {
 
 
     private final UserRepositories userRepositories;
-    private final RoleRepositories roleRepositories;
     private final PasswordEncoder passwordEncoder;
 
 
     @Autowired
-    public ServiceUserImp(UserRepositories userRepositories, RoleRepositories roleRepositories, PasswordEncoder passwordEncoder) {
+    public ServiceUserImp(UserRepositories userRepositories, PasswordEncoder passwordEncoder) {
         this.userRepositories = userRepositories;
-        this.roleRepositories = roleRepositories;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -44,9 +40,6 @@ public class ServiceUserImp implements ServiceUser {
     @Transactional
     public void saveUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        if (user.getRoles().contains(roleRepositories.findRoleByRole("ROLE_ADMIN"))) {
-            user.getRoles().add(roleRepositories.findRoleByRole("ROLE_USER"));
-        }
         userRepositories.save(user);
     }
 
@@ -55,9 +48,6 @@ public class ServiceUserImp implements ServiceUser {
     public void update(int id, User updatedUser) {
         updatedUser.setId(id);
         updatedUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
-        if (updatedUser.getRoles().contains(roleRepositories.findRoleByRole("ROLE_ADMIN"))) {
-            updatedUser.getRoles().add(roleRepositories.findRoleByRole("ROLE_USER"));
-        }
         userRepositories.save(updatedUser);
     }
 
@@ -67,8 +57,4 @@ public class ServiceUserImp implements ServiceUser {
         userRepositories.deleteById(id);
     }
 
-    @Override
-    public Set<Role> getRole() {
-        return new HashSet<>(roleRepositories.findAll());
-    }
 }
